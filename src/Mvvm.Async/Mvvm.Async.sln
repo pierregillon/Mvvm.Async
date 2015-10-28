@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvvm.Async", "Mvvm.Async.csproj", "{A2FEAD5F-27C9-46F7-AC1E-7CE95CADB892}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{BF1C8B49-8558-46B8-A179-656830645D22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWpfApplication", "..\..\examples\SimpleWpfApplication\SimpleWpfApplication.csproj", "{8A0660E0-CBE3-43C7-9681-A0257CDF6B5F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2FEAD5F-27C9-46F7-AC1E-7CE95CADB892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FEAD5F-27C9-46F7-AC1E-7CE95CADB892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2FEAD5F-27C9-46F7-AC1E-7CE95CADB892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FEAD5F-27C9-46F7-AC1E-7CE95CADB892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A0660E0-CBE3-43C7-9681-A0257CDF6B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A0660E0-CBE3-43C7-9681-A0257CDF6B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A0660E0-CBE3-43C7-9681-A0257CDF6B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A0660E0-CBE3-43C7-9681-A0257CDF6B5F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A0660E0-CBE3-43C7-9681-A0257CDF6B5F} = {BF1C8B49-8558-46B8-A179-656830645D22}
+	EndGlobalSection
+EndGlobal
