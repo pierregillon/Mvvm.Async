@@ -77,5 +77,21 @@ namespace Mvvm.Async.Tests
 
             Check.That(canExecute).IsFalse();
         }
+
+        [Fact]
+        public void raise_can_execute_changed()
+        {
+            var canExecuteChanged = false;
+
+            var asyncCommand = new AsyncCommand(SOME_ACTION, () => false);
+            ((ICommand) asyncCommand).CanExecuteChanged += (sender, args) =>
+            {
+                canExecuteChanged = true;
+            };
+
+            asyncCommand.RaiseCanExecuteChanged();
+
+            Check.That(canExecuteChanged).IsTrue();
+        }
     }
 }
