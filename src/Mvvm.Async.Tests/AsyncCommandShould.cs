@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Moq;
 using NFluent;
 using Xunit;
 
@@ -9,19 +10,21 @@ namespace Mvvm.Async.Tests
     public class AsyncCommandShould
     {
         private static readonly Func<Task> SOME_ACTION = () => Task.Factory.StartNew(() => { });
+        private readonly Mock<IAction> _action;
+
+        public AsyncCommandShould()
+        {
+            _action = new Mock<IAction>();
+        }
 
         [Fact]
         public async Task execute_an_async_delegate()
         {
-            var result = string.Empty;
-
-            Func<Task> action = () => Task.Factory.StartNew(() => result = "Success");
-
-            var asyncCommand = new AsyncCommand(action);
+            var asyncCommand = new AsyncCommand(_action.Object.Execute);
 
             await asyncCommand.ExecuteAsync();
 
-            Check.That(result).IsEqualTo("Success");
+            _action.Verify(x => x.Execute(), Times.Once);
         }
 
         [Fact]
@@ -57,15 +60,11 @@ namespace Mvvm.Async.Tests
         [Fact]
         public void execute_an_async_delegate_with_ICommand()
         {
-            var result = string.Empty;
-
-            Func<Task> action = () => Task.Factory.StartNew(() => result = "Success");
-
-            ICommand asyncCommand = new AsyncCommand(action);
+            ICommand asyncCommand = new AsyncCommand(_action.Object.Execute);
 
             asyncCommand.Execute(null);
 
-            Check.That(result).IsEqualTo("Success");
+            _action.Verify(x => x.Execute(), Times.Once);
         }
 
         [Fact]
@@ -82,16 +81,19 @@ namespace Mvvm.Async.Tests
         public void raise_can_execute_changed()
         {
             var canExecuteChanged = false;
-
             var asyncCommand = new AsyncCommand(SOME_ACTION, () => false);
-            ((ICommand) asyncCommand).CanExecuteChanged += (sender, args) =>
-            {
-                canExecuteChanged = true;
-            };
+            ((ICommand) asyncCommand).CanExecuteChanged += (sender, args) => { canExecuteChanged = true; };
 
             asyncCommand.RaiseCanExecuteChanged();
 
             Check.That(canExecuteChanged).IsTrue();
+        }
+
+        // ----- Interna class
+
+        public interface IAction
+        {
+            Task Execute();
         }
     }
 }
