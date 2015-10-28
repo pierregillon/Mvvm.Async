@@ -10,11 +10,15 @@ namespace Mvvm.Async.Tests
     public class AsyncCommandShould
     {
         private static readonly Func<Task> SOME_ACTION = () => Task.Factory.StartNew(() => { });
+        private static readonly Func<string, Task> SOME_PARAMETERIZED_ACTION = s => Task.Factory.StartNew(() => { });
+
         private readonly Mock<IAction> _action;
+        private readonly Mock<IAction<string>> _parameterizedAction;
 
         public AsyncCommandShould()
         {
             _action = new Mock<IAction>();
+            _parameterizedAction = new Mock<IAction<string>>();
         }
 
         [Fact]
@@ -28,11 +32,31 @@ namespace Mvvm.Async.Tests
         }
 
         [Fact]
+        public async Task execute_an_async_delegate_with_parameter()
+        {
+            var asyncCommand = new AsyncCommand<string>(_parameterizedAction.Object.Execute);
+
+            await asyncCommand.ExecuteAsync("Boom");
+
+            _parameterizedAction.Verify(x => x.Execute("Boom"), Times.Once);
+        }
+
+        [Fact]
         public void not_be_executable_when_predicate_returns_false()
         {
             var asyncCommand = new AsyncCommand(SOME_ACTION, () => false);
 
             var canExecute = asyncCommand.CanExecute();
+
+            Check.That(canExecute).IsFalse();
+        }
+
+        [Fact]
+        public void not_be_executable_when_parameterized_predicate_returns_false()
+        {
+            var asyncCommand = new AsyncCommand<string>(SOME_PARAMETERIZED_ACTION, value => false);
+
+            var canExecute = asyncCommand.CanExecute("Boom");
 
             Check.That(canExecute).IsFalse();
         }
@@ -104,6 +128,10 @@ namespace Mvvm.Async.Tests
         public interface IAction
         {
             Task Execute();
+        }
+        public interface IAction<in T>
+        {
+            Task Execute(T value);
         }
     }
 }

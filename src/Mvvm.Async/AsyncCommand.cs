@@ -47,4 +47,25 @@ namespace Mvvm.Async
             remove { _canExecuteChanged -= value; }
         }
     }
+
+    public class AsyncCommand<T>
+    {
+        private readonly Func<T, Task> _parameterizedAction;
+        private readonly Predicate<T> _canExecute;
+
+        public AsyncCommand(Func<T, Task> parameterizedAction, Predicate<T> canExecute = null)
+        {
+            _parameterizedAction = parameterizedAction;
+            _canExecute = canExecute;
+        }
+
+        public Task ExecuteAsync(T value)
+        {
+            return _parameterizedAction(value);
+        }
+        public bool CanExecute(T value)
+        {
+            return false;
+        }
+    }
 }
