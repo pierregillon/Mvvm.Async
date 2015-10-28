@@ -53,5 +53,29 @@ namespace Mvvm.Async.Tests
 
             Check.That(canExecute).IsTrue();
         }
+
+        [Fact]
+        public void execute_an_async_delegate_with_ICommand()
+        {
+            var result = string.Empty;
+
+            Func<Task> action = () => Task.Factory.StartNew(() => result = "Success");
+
+            ICommand asyncCommand = new AsyncCommand(action);
+
+            asyncCommand.Execute(null);
+
+            Check.That(result).IsEqualTo("Success");
+        }
+
+        [Fact]
+        public void not_be_executable_with_ICommand_when_predicate_returns_false()
+        {
+            ICommand asyncCommand = new AsyncCommand(SOME_ACTION, () => false);
+
+            var canExecute = asyncCommand.CanExecute(null);
+
+            Check.That(canExecute).IsFalse();
+        }
     }
 }

@@ -26,11 +26,11 @@ namespace Mvvm.Async
         // ----- Implement ICommand
         public bool CanExecute(object parameter)
         {
-            throw new NotImplementedException();
+            return CanExecute();
         }
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            await ExecuteAsync();
         }
         public event EventHandler CanExecuteChanged;
     }
