@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Mvvm.Async;
@@ -28,8 +29,8 @@ namespace SimpleWpfApplication.ViewModels
             }
         }
 
-        private ICommand _writeMessageCommand;
-        public ICommand WriteMessageCommand
+        private IAsyncCommand _writeMessageCommand;
+        public IAsyncCommand WriteMessageCommand
         {
             get { return _writeMessageCommand ?? (_writeMessageCommand = new AsyncCommand(WriteMessageAsync)); }
         }
@@ -41,7 +42,11 @@ namespace SimpleWpfApplication.ViewModels
 
         private Task WriteMessageAsync()
         {
-            return Task.Factory.StartNew(() => { Message = GetTextToDisplay(++_clickCount); });
+            return Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(20);
+                Message = GetTextToDisplay(++_clickCount);
+            });
         }
 
         private static string GetTextToDisplay(int count)

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWpfApplication", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvvm.Async.Tests", "..\Mvvm.Async.Tests\Mvvm.Async.Tests.csproj", "{E8C954DE-0437-424A-9427-5D93CB742C47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWpfApplication.Tests", "..\..\examples\SimpleWpfApplication.Tests\SimpleWpfApplication.Tests.csproj", "{55559D22-015D-4FC3-A8E0-5E67E49925E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,11 +31,16 @@ Global
 		{E8C954DE-0437-424A-9427-5D93CB742C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8C954DE-0437-424A-9427-5D93CB742C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8C954DE-0437-424A-9427-5D93CB742C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55559D22-015D-4FC3-A8E0-5E67E49925E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55559D22-015D-4FC3-A8E0-5E67E49925E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55559D22-015D-4FC3-A8E0-5E67E49925E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55559D22-015D-4FC3-A8E0-5E67E49925E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8A0660E0-CBE3-43C7-9681-A0257CDF6B5F} = {BF1C8B49-8558-46B8-A179-656830645D22}
+		{55559D22-015D-4FC3-A8E0-5E67E49925E3} = {BF1C8B49-8558-46B8-A179-656830645D22}
 	EndGlobalSection
 EndGlobal

@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace Mvvm.Async
 {
-    public class AsyncCommand : ICommand
+    public class AsyncCommand : ICommand, IAsyncCommand
     {
         private readonly Func<Task> _action;
         private readonly Func<bool> _predicate;
