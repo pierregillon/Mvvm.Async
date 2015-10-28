@@ -58,6 +58,16 @@ namespace Mvvm.Async.Tests
         }
 
         [Fact]
+        public async Task not_execute_when_predicate_returns_false()
+        {
+            var asyncCommand = new AsyncCommand(_action.Object.Execute, () => false);
+
+            await asyncCommand.ExecuteAsync();
+
+            _action.Verify(x => x.Execute(), Times.Never);
+        }
+
+        [Fact]
         public void execute_an_async_delegate_with_ICommand()
         {
             ICommand asyncCommand = new AsyncCommand(_action.Object.Execute);

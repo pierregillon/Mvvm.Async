@@ -18,7 +18,9 @@ namespace Mvvm.Async
         
         public async Task ExecuteAsync()
         {
-            await _action();
+            if (CanExecute()) {
+                await _action();
+            }
         }
         public bool CanExecute()
         {
