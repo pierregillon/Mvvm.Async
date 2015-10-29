@@ -12,13 +12,13 @@
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Path=Message, Mode=OneWay}" Width="200" />
-            <Button Content="CLICK ME!" Command="{Binding Path=WriteMessageCommand}" Width="120" />
+            <TextBlock Text="{Binding Path=CountMessage, Mode=OneWay}" Width="200" />
+            <Button Content="CLICK ME!" Command="{Binding Path=CountCommand}" Width="120" />
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Path=Message2, Mode=OneWay}" Width="200" />
+            <TextBlock Text="{Binding Path=Message, Mode=OneWay}" Width="200" />
             <TextBox x:Name="TxtBxContent" Width="50" />
             <Button Content="CLICK ME!" 
                     Command="{Binding Path=WriteMessageWithParameterCommand}" 

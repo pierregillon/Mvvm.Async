@@ -19,6 +19,17 @@ namespace SimpleWpfApplication.ViewModels
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private string _countMessage;
+        public string CountMessage
+        {
+            get { return _countMessage; }
+            set
+            {
+                _countMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _message;
         public string Message
         {
@@ -30,19 +41,8 @@ namespace SimpleWpfApplication.ViewModels
             }
         }
 
-        private string _message2;
-        public string Message2
-        {
-            get { return _message2; }
-            set
-            {
-                _message2 = value;
-                OnPropertyChanged();
-            }
-        }
-
         private IAsyncCommand _writeMessageCommand;
-        public IAsyncCommand WriteMessageCommand
+        public IAsyncCommand CountCommand
         {
             get { return _writeMessageCommand ?? (_writeMessageCommand = new AsyncCommand(WriteMessageAsync)); }
         }
@@ -50,12 +50,16 @@ namespace SimpleWpfApplication.ViewModels
         private IAsyncCommand<string> _writeMessageWithParameterCommand;
         public IAsyncCommand<string> WriteMessageWithParameterCommand
         {
-            get { return _writeMessageWithParameterCommand ?? (_writeMessageWithParameterCommand = new AsyncCommand<string>(WriteMessageWithParameterAsync)); }
+            get
+            {
+                return _writeMessageWithParameterCommand ??
+                       (_writeMessageWithParameterCommand = new AsyncCommand<string>(WriteMessageWithParameterAsync, CanWriteMessageAsync));
+            }
         }
 
         public MainViewModel()
         {
-            _message = GetTextToDisplay(_clickCount);
+            _countMessage = GetTextToDisplay(_clickCount);
         }
 
         private Task WriteMessageAsync()
@@ -63,15 +67,16 @@ namespace SimpleWpfApplication.ViewModels
             return Task.Factory.StartNew(() =>
             {
                 Thread.Sleep(20);
-                Message = GetTextToDisplay(++_clickCount);
+                CountMessage = GetTextToDisplay(++_clickCount);
             });
         }
         private Task WriteMessageWithParameterAsync(string message)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                Message2 = message;
-            });
+            return Task.Factory.StartNew(() => { Message = message; });
+        }
+        private bool CanWriteMessageAsync(string value)
+        {
+            return string.IsNullOrEmpty(value) == false;
         }
 
         private static string GetTextToDisplay(int count)
