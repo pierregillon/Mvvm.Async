@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Moq;
@@ -160,6 +161,8 @@ namespace Mvvm.Async.Tests
 
             asyncCommand.RaiseCanExecuteChanged();
 
+            Thread.Sleep(20);
+
             Check.That(canExecuteChanged).IsTrue();
         }
 
@@ -171,6 +174,8 @@ namespace Mvvm.Async.Tests
             ((ICommand)asyncCommand).CanExecuteChanged += (sender, args) => { canExecuteChanged = true; };
 
             asyncCommand.RaiseCanExecuteChanged();
+
+            Thread.Sleep(20);
 
             Check.That(canExecuteChanged).IsTrue();
         }

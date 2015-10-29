@@ -25,6 +25,7 @@ namespace SimpleWpfApplication.ViewModels
             {
                 _countMessage = value;
                 OnPropertyChanged();
+                _countCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -36,6 +37,7 @@ namespace SimpleWpfApplication.ViewModels
             {
                 _message = value;
                 OnPropertyChanged();
+                _writeMessageWithParameterCommand.RaiseCanExecuteChanged();
             }
         }
 

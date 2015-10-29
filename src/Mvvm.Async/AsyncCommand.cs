@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -8,14 +9,16 @@ namespace Mvvm.Async
     {
         private readonly Func<Task> _action;
         private readonly Func<bool> _predicate;
+        private readonly SynchronizationContext _context;
         private event EventHandler _canExecuteChanged;
-        
+
         public AsyncCommand(Func<Task> action, Func<bool> predicate = null)
         {
             _action = action;
             _predicate = predicate;
+            _context = SynchronizationContext.Current;
         }
-        
+
         public async Task ExecuteAsync()
         {
             if (CanExecute()) {
@@ -28,8 +31,18 @@ namespace Mvvm.Async
         }
         public void RaiseCanExecuteChanged()
         {
+            if (_context != null) {
+                _context.Post(state => OnCanExecuteChanged(), null);
+            }
+            else {
+                OnCanExecuteChanged();
+            }
+        }
+        private void OnCanExecuteChanged()
+        {
             var handler = _canExecuteChanged;
-            if (handler != null) handler(this, EventArgs.Empty);
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
 
         // ----- Implement ICommand
@@ -52,12 +65,14 @@ namespace Mvvm.Async
     {
         private readonly Func<T, Task> _parameterizedAction;
         private readonly Predicate<T> _canExecute;
+        private readonly SynchronizationContext _context;
         private event EventHandler _canExecuteChanged;
 
         public AsyncCommand(Func<T, Task> parameterizedAction, Predicate<T> canExecute = null)
         {
             _parameterizedAction = parameterizedAction;
             _canExecute = canExecute;
+            _context = SynchronizationContext.Current;
         }
 
         public async Task ExecuteAsync(T value)
@@ -72,8 +87,18 @@ namespace Mvvm.Async
         }
         public void RaiseCanExecuteChanged()
         {
+            if (_context != null) {
+                _context.Post(state => OnCanExecuteChanged(), null);
+            }
+            else {
+                OnCanExecuteChanged();
+            }
+        }
+        private void OnCanExecuteChanged()
+        {
             var handler = _canExecuteChanged;
-            if (handler != null) handler(this, EventArgs.Empty);
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
 
         // ----- Explicit implementations
@@ -83,7 +108,7 @@ namespace Mvvm.Async
         }
         async void ICommand.Execute(object parameter)
         {
-            await ExecuteAsync((T)parameter);
+            await ExecuteAsync((T) parameter);
         }
         event EventHandler ICommand.CanExecuteChanged
         {
