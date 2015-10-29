@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="Mvvm.Async.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncCommand.cs" />

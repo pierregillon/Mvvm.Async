@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Pierre GILLON</authors>
+    <owners>Pierre GILLON</owners>
+    <licenseUrl>https://github.com/pierregillon/Mvvm.Async/license</licenseUrl>
+    <projectUrl>https://github.com/pierregillon/Mvvm.Async</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple library to deal with mvvm pattern with async tool object.</description>
+    <releaseNotes>Initial version of the Mvvm.Async.</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>mvvm task async command</tags>
+  </metadata>
+</package>
