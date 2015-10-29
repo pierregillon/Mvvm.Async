@@ -3,16 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:SimpleWpfApplication.ViewModels"
         Title="MainWindow" Height="350" Width="525">
-    
+
     <Window.Resources>
-        <viewModels:MainViewModel x:Key="MainViewModel"/>
+        <viewModels:MainViewModel x:Key="MainViewModel" />
     </Window.Resources>
-    
-    <StackPanel DataContext="{Binding Source={StaticResource MainViewModel}}" 
-                Orientation="Horizontal"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center">
-        <TextBlock Text="{Binding Path=Message, Mode=OneWay}" Width="200"/>
-        <Button Content="CLICK ME!" Command="{Binding Path=WriteMessageCommand}" Width="120"/>
+
+    <StackPanel DataContext="{Binding Source={StaticResource MainViewModel}}">
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Path=Message, Mode=OneWay}" Width="200" />
+            <Button Content="CLICK ME!" Command="{Binding Path=WriteMessageCommand}" Width="120" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Path=Message2, Mode=OneWay}" Width="200" />
+            <TextBox x:Name="TxtBxContent" Width="50" />
+            <Button Content="CLICK ME!" 
+                    Command="{Binding Path=WriteMessageWithParameterCommand}" 
+                    CommandParameter="{Binding ElementName=TxtBxContent, Path=Text}" 
+                    Width="120" />
+        </StackPanel>
     </StackPanel>
 </Window>

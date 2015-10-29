@@ -8,4 +8,11 @@ namespace Mvvm.Async
         bool CanExecute();
         void RaiseCanExecuteChanged();
     }
+
+    public interface IAsyncCommand<in T>
+    {
+        Task ExecuteAsync(T parameter);
+        bool CanExecute(T parameter);
+        void RaiseCanExecuteChanged();
+    }
 }

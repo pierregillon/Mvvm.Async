@@ -48,7 +48,7 @@ namespace Mvvm.Async
         }
     }
 
-    public class AsyncCommand<T> : ICommand
+    public class AsyncCommand<T> : ICommand, IAsyncCommand<T>
     {
         private readonly Func<T, Task> _parameterizedAction;
         private readonly Predicate<T> _canExecute;

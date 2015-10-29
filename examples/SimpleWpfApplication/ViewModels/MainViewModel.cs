@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,10 +30,27 @@ namespace SimpleWpfApplication.ViewModels
             }
         }
 
+        private string _message2;
+        public string Message2
+        {
+            get { return _message2; }
+            set
+            {
+                _message2 = value;
+                OnPropertyChanged();
+            }
+        }
+
         private IAsyncCommand _writeMessageCommand;
         public IAsyncCommand WriteMessageCommand
         {
             get { return _writeMessageCommand ?? (_writeMessageCommand = new AsyncCommand(WriteMessageAsync)); }
+        }
+
+        private IAsyncCommand<string> _writeMessageWithParameterCommand;
+        public IAsyncCommand<string> WriteMessageWithParameterCommand
+        {
+            get { return _writeMessageWithParameterCommand ?? (_writeMessageWithParameterCommand = new AsyncCommand<string>(WriteMessageWithParameterAsync)); }
         }
 
         public MainViewModel()
@@ -46,6 +64,13 @@ namespace SimpleWpfApplication.ViewModels
             {
                 Thread.Sleep(20);
                 Message = GetTextToDisplay(++_clickCount);
+            });
+        }
+        private Task WriteMessageWithParameterAsync(string message)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                Message2 = message;
             });
         }
 
