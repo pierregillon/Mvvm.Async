@@ -105,7 +105,7 @@ namespace Mvvm.Async.Tests
         public async Task not_execute_when_parameterized_predicate_returns_false()
         {
             var asyncCommand = new AsyncCommand<string>(_parameterizedAction.Object.Execute, x => false);
-
+            
             await asyncCommand.ExecuteAsync("Boom");
 
             _parameterizedAction.Verify(x => x.Execute(It.IsAny<string>()), Times.Never);
@@ -152,11 +152,23 @@ namespace Mvvm.Async.Tests
         }
 
         [Fact]
-        public void raise_can_execute_changed()
+        public void raise_can_execute_changed_for_command()
         {
             var canExecuteChanged = false;
             var asyncCommand = new AsyncCommand(SOME_ACTION, () => false);
             ((ICommand) asyncCommand).CanExecuteChanged += (sender, args) => { canExecuteChanged = true; };
+
+            asyncCommand.RaiseCanExecuteChanged();
+
+            Check.That(canExecuteChanged).IsTrue();
+        }
+
+        [Fact]
+        public void raise_can_execute_changed_for_generic_command()
+        {
+            var canExecuteChanged = false;
+            var asyncCommand = new AsyncCommand<string>(SOME_PARAMETERIZED_ACTION, x => false);
+            ((ICommand)asyncCommand).CanExecuteChanged += (sender, args) => { canExecuteChanged = true; };
 
             asyncCommand.RaiseCanExecuteChanged();
 

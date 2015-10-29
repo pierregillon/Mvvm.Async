@@ -52,6 +52,7 @@ namespace Mvvm.Async
     {
         private readonly Func<T, Task> _parameterizedAction;
         private readonly Predicate<T> _canExecute;
+        private event EventHandler _canExecuteChanged;
 
         public AsyncCommand(Func<T, Task> parameterizedAction, Predicate<T> canExecute = null)
         {
@@ -69,6 +70,11 @@ namespace Mvvm.Async
         {
             return _canExecute == null || _canExecute(value);
         }
+        public void RaiseCanExecuteChanged()
+        {
+            var handler = _canExecuteChanged;
+            if (handler != null) handler(this, EventArgs.Empty);
+        }
 
         // ----- Explicit implementations
         bool ICommand.CanExecute(object parameter)
@@ -79,6 +85,10 @@ namespace Mvvm.Async
         {
             await ExecuteAsync((T)parameter);
         }
-        public event EventHandler CanExecuteChanged;
+        event EventHandler ICommand.CanExecuteChanged
+        {
+            add { _canExecuteChanged += value; }
+            remove { _canExecuteChanged -= value; }
+        }
     }
 }
