@@ -48,7 +48,7 @@ namespace Mvvm.Async
         }
     }
 
-    public class AsyncCommand<T>
+    public class AsyncCommand<T> : ICommand
     {
         private readonly Func<T, Task> _parameterizedAction;
         private readonly Predicate<T> _canExecute;
@@ -59,13 +59,26 @@ namespace Mvvm.Async
             _canExecute = canExecute;
         }
 
-        public Task ExecuteAsync(T value)
+        public async Task ExecuteAsync(T value)
         {
-            return _parameterizedAction(value);
+            if (CanExecute(value)) {
+                await _parameterizedAction(value);
+            }
         }
         public bool CanExecute(T value)
         {
-            return false;
+            return _canExecute == null || _canExecute(value);
         }
+
+        // ----- Explicit implementations
+        bool ICommand.CanExecute(object parameter)
+        {
+            return CanExecute((T) parameter);
+        }
+        async void ICommand.Execute(object parameter)
+        {
+            await ExecuteAsync((T)parameter);
+        }
+        public event EventHandler CanExecuteChanged;
     }
 }

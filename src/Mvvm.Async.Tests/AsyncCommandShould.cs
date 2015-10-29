@@ -72,6 +72,16 @@ namespace Mvvm.Async.Tests
         }
 
         [Fact]
+        public void be_executable_when_parameterized_predicate_returns_false()
+        {
+            var asyncCommand = new AsyncCommand<string>(SOME_PARAMETERIZED_ACTION, x => true);
+
+            var canExecute = asyncCommand.CanExecute("Boom");
+
+            Check.That(canExecute).IsTrue();
+        }
+
+        [Fact]
         public void be_executable_when_no_predicate_defined()
         {
             var asyncCommand = new AsyncCommand(SOME_ACTION);
@@ -92,6 +102,16 @@ namespace Mvvm.Async.Tests
         }
 
         [Fact]
+        public async Task not_execute_when_parameterized_predicate_returns_false()
+        {
+            var asyncCommand = new AsyncCommand<string>(_parameterizedAction.Object.Execute, x => false);
+
+            await asyncCommand.ExecuteAsync("Boom");
+
+            _parameterizedAction.Verify(x => x.Execute(It.IsAny<string>()), Times.Never);
+        }
+
+        [Fact]
         public void execute_an_async_delegate_with_ICommand()
         {
             ICommand asyncCommand = new AsyncCommand(_action.Object.Execute);
@@ -102,11 +122,31 @@ namespace Mvvm.Async.Tests
         }
 
         [Fact]
+        public void execute_an_async_parameterized_delegate_with_ICommand()
+        {
+            ICommand asyncCommand = new AsyncCommand<string>(_parameterizedAction.Object.Execute);
+
+            asyncCommand.Execute("Boom");
+
+            _parameterizedAction.Verify(x => x.Execute("Boom"), Times.Once);
+        }
+
+        [Fact]
         public void not_be_executable_with_ICommand_when_predicate_returns_false()
         {
             ICommand asyncCommand = new AsyncCommand(SOME_ACTION, () => false);
 
             var canExecute = asyncCommand.CanExecute(null);
+
+            Check.That(canExecute).IsFalse();
+        }
+
+        [Fact]
+        public void not_be_executable_with_ICommand_when_parameterized_predicate_returns_false()
+        {
+            ICommand asyncCommand = new AsyncCommand<string>(SOME_PARAMETERIZED_ACTION, x => false);
+
+            var canExecute = asyncCommand.CanExecute("Boom");
 
             Check.That(canExecute).IsFalse();
         }
@@ -123,7 +163,7 @@ namespace Mvvm.Async.Tests
             Check.That(canExecuteChanged).IsTrue();
         }
 
-        // ----- Interna class
+        // ----- Internal classes
 
         public interface IAction
         {
