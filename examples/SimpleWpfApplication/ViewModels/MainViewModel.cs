@@ -1,9 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Mvvm.Async;
 
 namespace SimpleWpfApplication.ViewModels
@@ -41,10 +39,14 @@ namespace SimpleWpfApplication.ViewModels
             }
         }
 
-        private IAsyncCommand _writeMessageCommand;
+        private IAsyncCommand _countCommand;
         public IAsyncCommand CountCommand
         {
-            get { return _writeMessageCommand ?? (_writeMessageCommand = new AsyncCommand(WriteMessageAsync)); }
+            get
+            {
+                return _countCommand ??
+                       (_countCommand = new AsyncCommand(CountAsync, CanCount));
+            }
         }
 
         private IAsyncCommand<string> _writeMessageWithParameterCommand;
@@ -62,7 +64,7 @@ namespace SimpleWpfApplication.ViewModels
             _countMessage = GetTextToDisplay(_clickCount);
         }
 
-        private Task WriteMessageAsync()
+        private Task CountAsync()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -70,6 +72,11 @@ namespace SimpleWpfApplication.ViewModels
                 CountMessage = GetTextToDisplay(++_clickCount);
             });
         }
+        private bool CanCount()
+        {
+            return _clickCount < 10;
+        }
+
         private Task WriteMessageWithParameterAsync(string message)
         {
             return Task.Factory.StartNew(() => { Message = message; });

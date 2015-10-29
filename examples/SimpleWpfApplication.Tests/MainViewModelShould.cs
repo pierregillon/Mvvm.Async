@@ -30,6 +30,15 @@ namespace SimpleWpfApplication.Tests
         }
 
         [Fact]
+        public async Task not_be_able_to_count_more_than_10()
+        {
+            for (var i = 0; i < 15; i++) {
+                await _mainViewModel.CountCommand.ExecuteAsync();
+            }
+            Check.That(_mainViewModel.CountMessage).IsEqualTo("Was clicked : 10 times");
+        }
+
+        [Fact]
         public async Task update_message_when_calling_write_command()
         {
             const string message = "Hello world";
